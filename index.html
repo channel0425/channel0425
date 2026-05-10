@@ -1,69 +1,95 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Connection Error</title>
+
+<title>Service Temporarily Unavailable</title>
 
 <style>
 
-body{
+*{
 margin:0;
-font-family:Arial;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:Arial,Helvetica,sans-serif;
 background:#111;
 color:white;
 overflow:hidden;
 }
 
-#errorPage,
-#loginPage,
-#chatPage{
-width:100%;
-height:100vh;
-}
+/* ERROR PAGE */
 
 #errorPage{
+width:100%;
+height:100vh;
 display:flex;
 justify-content:center;
 align-items:center;
 text-align:center;
+padding:20px;
+}
+
+.error-box{
+max-width:600px;
 }
 
 .error-code{
 font-size:120px;
 font-weight:bold;
-color:#999;
+color:#9ca3af;
 }
 
 .error-title{
-font-size:30px;
+font-size:32px;
 margin-top:10px;
+color:#d1d5db;
 }
 
 .error-text{
 margin-top:20px;
-color:#aaa;
+line-height:1.7;
+color:#9ca3af;
 }
 
 .more-link{
-margin-top:30px;
-color:#666;
+margin-top:35px;
+display:inline-block;
+font-size:13px;
+color:#6b7280;
 cursor:pointer;
 }
 
+.more-link:hover{
+color:#d1d5db;
+}
+
+/* LOGIN PAGE */
+
 #loginPage{
 display:none;
+width:100%;
+height:100vh;
 justify-content:center;
 align-items:center;
 background:#0f172a;
 }
 
 .login-box{
-width:320px;
+width:340px;
 background:#111827;
 padding:30px;
-border-radius:16px;
+border-radius:18px;
+}
+
+.login-title{
+text-align:center;
+margin-bottom:25px;
 }
 
 .input{
@@ -71,24 +97,29 @@ width:100%;
 padding:14px;
 margin-bottom:15px;
 border:none;
+outline:none;
 background:#1e293b;
 border-radius:10px;
 color:white;
 }
 
-.login-btn,
-.send-btn{
+.login-btn{
 width:100%;
 padding:14px;
 border:none;
 border-radius:10px;
 background:#2563eb;
 color:white;
+font-weight:bold;
 cursor:pointer;
 }
 
+/* CHAT PAGE */
+
 #chatPage{
 display:none;
+width:100%;
+height:100vh;
 background:#0f172a;
 }
 
@@ -99,10 +130,11 @@ display:flex;
 justify-content:space-between;
 align-items:center;
 padding:0 20px;
+border-bottom:1px solid #1e293b;
 }
 
 .logout-btn{
-background:red;
+background:#ef4444;
 border:none;
 padding:10px 15px;
 color:white;
@@ -119,35 +151,51 @@ padding:20px;
 .message{
 background:#1e293b;
 padding:12px;
-margin-bottom:10px;
-border-radius:10px;
+margin-bottom:12px;
+border-radius:12px;
 max-width:70%;
+line-height:1.6;
 }
 
 .input-area{
 height:80px;
 display:flex;
-padding:10px;
 gap:10px;
+padding:15px;
+border-top:1px solid #1e293b;
 }
 
 .message-input{
 flex:1;
-padding:14px;
 border:none;
+outline:none;
 background:#1e293b;
-border-radius:10px;
+padding:14px;
+border-radius:12px;
 color:white;
 }
 
+.send-btn{
+width:100px;
+border:none;
+border-radius:12px;
+background:#2563eb;
+color:white;
+font-weight:bold;
+cursor:pointer;
+}
+
 </style>
+
 </head>
 
 <body>
 
+<!-- ERROR PAGE -->
+
 <div id="errorPage">
 
-<div>
+<div class="error-box">
 
 <div class="error-code">
 503
@@ -158,7 +206,11 @@ Service Temporarily Unavailable
 </div>
 
 <div class="error-text">
+
+The server is temporarily unable to handle your request.<br><br>
+
 ERR_CONNECTION_CLOSED
+
 </div>
 
 <div class="more-link" id="moreBtn">
@@ -169,25 +221,42 @@ More Details
 
 </div>
 
+<!-- LOGIN PAGE -->
+
 <div id="loginPage">
 
 <div class="login-box">
 
-<h2>Secure Access</h2>
+<h2 class="login-title">
+Secure Access
+</h2>
 
-<br>
+<input
+type="email"
+id="email"
+class="input"
+placeholder="Email"
+>
 
-<input type="email" id="email" class="input" placeholder="Email">
+<input
+type="password"
+id="password"
+class="input"
+placeholder="Password"
+>
 
-<input type="password" id="password" class="input" placeholder="Password">
-
-<button class="login-btn" id="loginBtn">
+<button
+class="login-btn"
+id="loginBtn"
+>
 Enter
 </button>
 
 </div>
 
 </div>
+
+<!-- CHAT PAGE -->
 
 <div id="chatPage">
 
@@ -197,19 +266,33 @@ Enter
 Private Chat
 </h3>
 
-<button class="logout-btn" id="logoutBtn">
+<button
+class="logout-btn"
+id="logoutBtn"
+>
 Logout
 </button>
 
 </div>
 
-<div class="messages" id="messages"></div>
+<div
+class="messages"
+id="messages"
+></div>
 
 <div class="input-area">
 
-<input type="text" id="messageInput" class="message-input" placeholder="Type message">
+<input
+type="text"
+id="messageInput"
+class="message-input"
+placeholder="Type message..."
+>
 
-<button class="send-btn" id="sendBtn">
+<button
+class="send-btn"
+id="sendBtn"
+>
 Send
 </button>
 
@@ -217,7 +300,9 @@ Send
 
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- SUPABASE -->
+
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
 
 <script>
 
@@ -229,75 +314,87 @@ const SUPABASE_URL =
 "https://kumqnjqjrtkyfwuvhpqq.supabase.co";
 
 const SUPABASE_KEY =
-"YOUR_ANON_KEY";
+"PASTE_YOUR_ANON_KEY_HERE";
 
-const supabase =
-window.supabase.createClient(
+const supabaseClient =
+supabase.createClient(
 SUPABASE_URL,
 SUPABASE_KEY
 );
 
-const errorPage =
-document.getElementById("errorPage");
-
-const loginPage =
-document.getElementById("loginPage");
-
-const chatPage =
-document.getElementById("chatPage");
+/* OPEN LOGIN */
 
 document.getElementById(
 "moreBtn"
 ).onclick=function(){
 
-errorPage.style.display="none";
+document.getElementById(
+"errorPage"
+).style.display="none";
 
-loginPage.style.display="flex";
+document.getElementById(
+"loginPage"
+).style.display="flex";
 
 };
+
+/* LOGIN */
 
 document.getElementById(
 "loginBtn"
 ).onclick=async function(){
 
 const email =
-document.getElementById("email").value;
+document.getElementById(
+"email"
+).value;
 
 const password =
-document.getElementById("password").value;
+document.getElementById(
+"password"
+).value;
 
 const { error } =
-await supabase.auth.signInWithPassword({
+await supabaseClient.auth.signInWithPassword({
 
-email:email,
-password:password
+email,
+password
 
 });
 
 if(error){
 
 alert(error.message);
+
 return;
 
 }
 
-loginPage.style.display="none";
+document.getElementById(
+"loginPage"
+).style.display="none";
 
-chatPage.style.display="block";
+document.getElementById(
+"chatPage"
+).style.display="block";
 
 loadMessages();
 
 };
 
+/* LOGOUT */
+
 document.getElementById(
 "logoutBtn"
 ).onclick=async function(){
 
-await supabase.auth.signOut();
+await supabaseClient.auth.signOut();
 
 location.reload();
 
 };
+
+/* SEND MESSAGE */
 
 document.getElementById(
 "sendBtn"
@@ -317,13 +414,14 @@ if(!text) return;
 
 const {
 data:{user}
-} = await supabase.auth.getUser();
+} = await supabaseClient.auth.getUser();
 
-await supabase
+await supabaseClient
 .from("message")
 .insert([{
 
 sender:user.email,
+
 encrypted:{
 text:text
 }
@@ -333,6 +431,8 @@ text:text
 input.value="";
 
 }
+
+/* LOAD MESSAGES */
 
 async function loadMessages(){
 
@@ -344,7 +444,7 @@ document.getElementById(
 async function refresh(){
 
 const { data } =
-await supabase
+await supabaseClient
 .from("message")
 .select("*")
 .order("id",{ascending:true});
@@ -354,7 +454,9 @@ box.innerHTML="";
 for(const item of data){
 
 const div =
-document.createElement("div");
+document.createElement(
+"div"
+);
 
 div.className="message";
 
@@ -377,8 +479,8 @@ box.scrollHeight;
 
 refresh();
 
-supabase
-.channel("chat")
+supabaseClient
+.channel("chat-room")
 .on(
 "postgres_changes",
 {
@@ -401,4 +503,3 @@ refresh();
 
 </body>
 </html>
-```
