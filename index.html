@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,67 +8,51 @@
 
 <style>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
 body{
-font-family:Arial,Helvetica,sans-serif;
+margin:0;
+font-family:Arial;
 background:#111;
 color:white;
 overflow:hidden;
 }
 
-#errorPage{
+#errorPage,
+#loginPage,
+#chatPage{
 width:100%;
 height:100vh;
+}
+
+#errorPage{
 display:flex;
 justify-content:center;
 align-items:center;
 text-align:center;
-padding:20px;
-}
-
-.error-container{
-max-width:600px;
 }
 
 .error-code{
-font-size:110px;
+font-size:120px;
 font-weight:bold;
-color:#b0b0b0;
+color:#999;
 }
 
 .error-title{
-font-size:32px;
+font-size:30px;
 margin-top:10px;
-color:#d1d5db;
 }
 
 .error-text{
 margin-top:20px;
-color:#9ca3af;
-line-height:1.7;
-font-size:15px;
+color:#aaa;
 }
 
 .more-link{
-margin-top:35px;
-display:inline-block;
-color:#6b7280;
+margin-top:30px;
+color:#666;
 cursor:pointer;
-font-size:13px;
-}
-
-.more-link:hover{
-color:#d1d5db;
 }
 
 #loginPage{
-width:100%;
-height:100vh;
 display:none;
 justify-content:center;
 align-items:center;
@@ -75,16 +60,10 @@ background:#0f172a;
 }
 
 .login-box{
-width:350px;
+width:320px;
 background:#111827;
 padding:30px;
-border-radius:18px;
-border:1px solid #1e293b;
-}
-
-.login-title{
-text-align:center;
-margin-bottom:25px;
+border-radius:16px;
 }
 
 .input{
@@ -92,13 +71,13 @@ width:100%;
 padding:14px;
 margin-bottom:15px;
 border:none;
-outline:none;
 background:#1e293b;
 border-radius:10px;
 color:white;
 }
 
-.login-btn{
+.login-btn,
+.send-btn{
 width:100%;
 padding:14px;
 border:none;
@@ -106,36 +85,16 @@ border-radius:10px;
 background:#2563eb;
 color:white;
 cursor:pointer;
-font-weight:bold;
 }
 
 #chatPage{
 display:none;
-height:100vh;
 background:#0f172a;
-}
-
-.chat-layout{
-display:flex;
-height:100%;
-}
-
-.sidebar{
-width:250px;
-background:#111827;
-border-right:1px solid #1e293b;
-padding:25px;
-}
-
-.main-chat{
-flex:1;
-display:flex;
-flex-direction:column;
 }
 
 .topbar{
 height:70px;
-border-bottom:1px solid #1e293b;
+background:#111827;
 display:flex;
 justify-content:space-between;
 align-items:center;
@@ -143,16 +102,16 @@ padding:0 20px;
 }
 
 .logout-btn{
+background:red;
 border:none;
-background:#ef4444;
-color:white;
 padding:10px 15px;
+color:white;
 border-radius:10px;
 cursor:pointer;
 }
 
 .messages{
-flex:1;
+height:calc(100vh - 150px);
 overflow-y:auto;
 padding:20px;
 }
@@ -160,43 +119,25 @@ padding:20px;
 .message{
 background:#1e293b;
 padding:12px;
-border-radius:12px;
-margin-bottom:12px;
+margin-bottom:10px;
+border-radius:10px;
 max-width:70%;
-line-height:1.5;
-}
-
-.me{
-margin-left:auto;
-background:#2563eb;
 }
 
 .input-area{
 height:80px;
-border-top:1px solid #1e293b;
 display:flex;
+padding:10px;
 gap:10px;
-padding:15px;
 }
 
 .message-input{
 flex:1;
+padding:14px;
 border:none;
-outline:none;
 background:#1e293b;
+border-radius:10px;
 color:white;
-border-radius:12px;
-padding:15px;
-}
-
-.send-btn{
-width:100px;
-border:none;
-border-radius:12px;
-background:#2563eb;
-color:white;
-font-weight:bold;
-cursor:pointer;
 }
 
 </style>
@@ -206,7 +147,7 @@ cursor:pointer;
 
 <div id="errorPage">
 
-<div class="error-container">
+<div>
 
 <div class="error-code">
 503
@@ -217,7 +158,6 @@ Service Temporarily Unavailable
 </div>
 
 <div class="error-text">
-The server is temporarily unable to handle your request.<br><br>
 ERR_CONNECTION_CLOSED
 </div>
 
@@ -226,42 +166,36 @@ More Details
 </div>
 
 </div>
+
 </div>
 
 <div id="loginPage">
 
 <div class="login-box">
 
-<h2 class="login-title">
-Secure Access
-</h2>
+<h2>Secure Access</h2>
+
+<br>
 
 <input type="email" id="email" class="input" placeholder="Email">
 
 <input type="password" id="password" class="input" placeholder="Password">
-
-<input type="password" id="secret" class="input" placeholder="Shared Secret Key">
 
 <button class="login-btn" id="loginBtn">
 Enter
 </button>
 
 </div>
+
 </div>
 
 <div id="chatPage">
 
-<div class="chat-layout">
-
-<div class="sidebar">
-<h2>Private Chat</h2>
-</div>
-
-<div class="main-chat">
-
 <div class="topbar">
 
-<h3>Secure Conversation</h3>
+<h3>
+Private Chat
+</h3>
 
 <button class="logout-btn" id="logoutBtn">
 Logout
@@ -273,70 +207,70 @@ Logout
 
 <div class="input-area">
 
-<input type="text" id="messageInput" class="message-input" placeholder="Type message...">
+<input type="text" id="messageInput" class="message-input" placeholder="Type message">
 
 <button class="send-btn" id="sendBtn">
 Send
 </button>
 
 </div>
-</div>
-</div>
+
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
 
+window.addEventListener(
+"load",
+function(){
+
 const SUPABASE_URL =
 "https://kumqnjqjrtkyfwuvhpqq.supabase.co";
 
 const SUPABASE_KEY =
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt1bXFuanFqcnRreWZ3dXZocHFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzODYyMjUsImV4cCI6MjA5Mzk2MjIyNX0.XII_TCL_bFD36XjtWvE3ri3vnCmY5f8f5DU3jc5uQ5U";
+"YOUR_ANON_KEY";
 
-const supabase = window.supabase.createClient(
+const supabase =
+window.supabase.createClient(
 SUPABASE_URL,
 SUPABASE_KEY
 );
 
+const errorPage =
+document.getElementById("errorPage");
+
+const loginPage =
+document.getElementById("loginPage");
+
+const chatPage =
+document.getElementById("chatPage");
+
 document.getElementById(
 "moreBtn"
-).addEventListener(
-"click",
-function(){
+).onclick=function(){
 
-document.getElementById(
-"errorPage"
-).style.display="none";
+errorPage.style.display="none";
 
-document.getElementById(
-"loginPage"
-).style.display="flex";
+loginPage.style.display="flex";
 
-}
-);
+};
 
 document.getElementById(
 "loginBtn"
-).addEventListener(
-"click",
-async function(){
+).onclick=async function(){
 
 const email =
-document.getElementById(
-"email"
-).value;
+document.getElementById("email").value;
 
 const password =
-document.getElementById(
-"password"
-).value;
+document.getElementById("password").value;
 
 const { error } =
 await supabase.auth.signInWithPassword({
 
-email,
-password
+email:email,
+password:password
 
 });
 
@@ -347,37 +281,27 @@ return;
 
 }
 
-document.getElementById(
-"loginPage"
-).style.display="none";
+loginPage.style.display="none";
 
-document.getElementById(
-"chatPage"
-).style.display="block";
+chatPage.style.display="block";
 
 loadMessages();
 
-}
-);
+};
 
 document.getElementById(
 "logoutBtn"
-).addEventListener(
-"click",
-async function(){
+).onclick=async function(){
 
 await supabase.auth.signOut();
+
 location.reload();
 
-}
-);
+};
 
 document.getElementById(
 "sendBtn"
-).addEventListener(
-"click",
-sendMessage
-);
+).onclick=sendMessage;
 
 async function sendMessage(){
 
@@ -430,18 +354,14 @@ box.innerHTML="";
 for(const item of data){
 
 const div =
-document.createElement(
-"div"
-);
+document.createElement("div");
 
 div.className="message";
 
 div.innerHTML=`
 
-<div style="font-size:12px;opacity:0.7;margin-bottom:5px;">
-${item.sender}
-</div>
-
+<b>${item.sender}</b>
+<br><br>
 ${item.encrypted.text}
 
 `;
@@ -450,7 +370,7 @@ box.appendChild(div);
 
 }
 
-box.scrollTop =
+box.scrollTop=
 box.scrollHeight;
 
 }
@@ -458,7 +378,7 @@ box.scrollHeight;
 refresh();
 
 supabase
-.channel("message-channel")
+.channel("chat")
 .on(
 "postgres_changes",
 {
@@ -474,7 +394,11 @@ refresh();
 
 }
 
+}
+);
+
 </script>
 
 </body>
 </html>
+```
