@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 
@@ -155,6 +156,7 @@ margin-bottom:12px;
 border-radius:12px;
 max-width:70%;
 line-height:1.6;
+word-wrap:break-word;
 }
 
 .input-area{
@@ -207,7 +209,9 @@ Service Temporarily Unavailable
 
 <div class="error-text">
 
-The server is temporarily unable to handle your request.<br><br>
+The server is temporarily unable to handle your request.
+
+<br><br>
 
 ERR_CONNECTION_CLOSED
 
@@ -310,6 +314,10 @@ window.addEventListener(
 "load",
 function(){
 
+/* =========================
+   SUPABASE CONFIG
+========================= */
+
 const SUPABASE_URL =
 "https://kumqnjqjrtkyfwuvhpqq.supabase.co";
 
@@ -322,7 +330,9 @@ SUPABASE_URL,
 SUPABASE_KEY
 );
 
-/* OPEN LOGIN */
+/* =========================
+   OPEN LOGIN
+========================= */
 
 document.getElementById(
 "moreBtn"
@@ -338,7 +348,9 @@ document.getElementById(
 
 };
 
-/* LOGIN */
+/* =========================
+   LOGIN
+========================= */
 
 document.getElementById(
 "loginBtn"
@@ -382,7 +394,9 @@ loadMessages();
 
 };
 
-/* LOGOUT */
+/* =========================
+   LOGOUT
+========================= */
 
 document.getElementById(
 "logoutBtn"
@@ -394,11 +408,28 @@ location.reload();
 
 };
 
-/* SEND MESSAGE */
+/* =========================
+   SEND MESSAGE
+========================= */
 
 document.getElementById(
 "sendBtn"
 ).onclick=sendMessage;
+
+document.getElementById(
+"messageInput"
+).addEventListener(
+"keypress",
+function(e){
+
+if(e.key==="Enter"){
+
+sendMessage();
+
+}
+
+}
+);
 
 async function sendMessage(){
 
@@ -432,7 +463,9 @@ input.value="";
 
 }
 
-/* LOAD MESSAGES */
+/* =========================
+   LOAD MESSAGES
+========================= */
 
 async function loadMessages(){
 
@@ -441,10 +474,11 @@ document.getElementById(
 "messages"
 );
 
-async function refresh(){
+/* LOAD OLD MESSAGES */
 
-const { data } =
-await supabaseClient
+const {
+data
+} = await supabaseClient
 .from("message")
 .select("*")
 .order("id",{ascending:true});
@@ -452,6 +486,48 @@ await supabaseClient
 box.innerHTML="";
 
 for(const item of data){
+
+addMessage(item);
+
+}
+
+/* REALTIME */
+
+supabaseClient
+.channel("chat-room")
+
+.on(
+"postgres_changes",
+{
+event:"INSERT",
+schema:"public",
+table:"message"
+},
+
+(payload)=>{
+
+addMessage(
+payload.new
+);
+
+}
+
+)
+
+.subscribe();
+
+}
+
+/* =========================
+   ADD MESSAGE
+========================= */
+
+function addMessage(item){
+
+const box =
+document.getElementById(
+"messages"
+);
 
 const div =
 document.createElement(
@@ -463,36 +539,17 @@ div.className="message";
 div.innerHTML=`
 
 <b>${item.sender}</b>
+
 <br><br>
+
 ${item.encrypted.text}
 
 `;
 
 box.appendChild(div);
 
-}
-
-box.scrollTop=
+box.scrollTop =
 box.scrollHeight;
-
-}
-
-refresh();
-
-supabaseClient
-.channel("chat-room")
-.on(
-"postgres_changes",
-{
-event:"*",
-schema:"public",
-table:"message"
-},
-()=>{
-refresh();
-}
-)
-.subscribe();
 
 }
 
@@ -502,4 +559,6 @@ refresh();
 </script>
 
 </body>
+
 </html>
+```
