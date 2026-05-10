@@ -224,6 +224,8 @@ body{
 
 <body>
 
+<!-- ERROR PAGE -->
+
 <div id="errorPage">
 
     <div class="error-container">
@@ -246,13 +248,15 @@ body{
 
         </div>
 
-        <div class="more-link" onclick="openLogin()">
+        <div class="more-link" id="moreBtn">
             More Details
         </div>
 
     </div>
 
 </div>
+
+<!-- LOGIN PAGE -->
 
 <div id="loginPage">
 
@@ -285,7 +289,7 @@ body{
 
         <button
             class="login-btn"
-            onclick="login()"
+            id="loginBtn"
         >
             Enter
         </button>
@@ -293,6 +297,8 @@ body{
     </div>
 
 </div>
+
+<!-- CHAT PAGE -->
 
 <div id="chatPage">
 
@@ -320,7 +326,7 @@ body{
 
                 <button
                     class="logout-btn"
-                    onclick="logout()"
+                    id="logoutBtn"
                 >
                     Logout
                 </button>
@@ -343,7 +349,7 @@ body{
 
                 <button
                     class="send-btn"
-                    onclick="sendMessage()"
+                    id="sendBtn"
                 >
                     Send
                 </button>
@@ -364,7 +370,7 @@ const SUPABASE_URL =
 "https://kumqnjqjrtkyfwuvhpqq.supabase.co";
 
 const SUPABASE_KEY =
-"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imt1bXFuanFqcnRreWZ3dXZocHFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgzODYyMjUsImV4cCI6MjA5Mzk2MjIyNX0.XII_TCL_bFD36XjtWvE3ri3vnCmY5f8f5DU3jc5uQ5U";
+"YOUR_ANON_PUBLIC_KEY";
 
 const supabase =
 window.supabase.createClient(
@@ -374,71 +380,104 @@ window.supabase.createClient(
 
 window.sharedSecret = "";
 
-window.openLogin = function(){
+/* =========================
+   OPEN LOGIN
+========================= */
 
-    document.getElementById(
-        "errorPage"
-    ).style.display = "none";
+document.getElementById(
+    "moreBtn"
+).addEventListener(
+    "click",
+    function(){
 
-    document.getElementById(
-        "loginPage"
-    ).style.display = "flex";
-
-}
-
-async function login(){
-
-    const email =
         document.getElementById(
-            "email"
-        ).value;
+            "errorPage"
+        ).style.display = "none";
 
-    const password =
         document.getElementById(
-            "password"
-        ).value;
+            "loginPage"
+        ).style.display = "flex";
 
-    const secret =
-        document.getElementById(
-            "secret"
-        ).value;
-
-    if(!secret){
-
-        alert("Enter secret key");
-
-        return;
     }
+);
 
-    window.sharedSecret = secret;
+/* =========================
+   LOGIN
+========================= */
 
-    const {
-        error
-    } = await supabase.auth.signInWithPassword({
+document.getElementById(
+    "loginBtn"
+).addEventListener(
+    "click",
+    async function(){
 
-        email,
-        password
+        const email =
+            document.getElementById(
+                "email"
+            ).value;
 
-    });
+        const password =
+            document.getElementById(
+                "password"
+            ).value;
 
-    if(error){
+        const secret =
+            document.getElementById(
+                "secret"
+            ).value;
 
-        alert(error.message);
+        if(!secret){
 
-        return;
+            alert(
+                "Enter secret key"
+            );
+
+            return;
+        }
+
+        window.sharedSecret = secret;
+
+        const {
+            error
+        } = await supabase.auth.signInWithPassword({
+
+            email,
+            password
+
+        });
+
+        if(error){
+
+            alert(error.message);
+
+            return;
+        }
+
+        location.reload();
+
     }
+);
 
-    location.reload();
+/* =========================
+   LOGOUT
+========================= */
 
-}
+document.getElementById(
+    "logoutBtn"
+).addEventListener(
+    "click",
+    async function(){
 
-async function logout(){
+        await supabase.auth.signOut();
 
-    await supabase.auth.signOut();
+        location.reload();
 
-    location.reload();
+    }
+);
 
-}
+/* =========================
+   CHECK USER
+========================= */
 
 async function checkUser(){
 
@@ -463,6 +502,10 @@ async function checkUser(){
 }
 
 checkUser();
+
+/* =========================
+   ENCRYPTION
+========================= */
 
 async function getKey(secret){
 
@@ -503,6 +546,10 @@ async function getKey(secret){
     );
 
 }
+
+/* =========================
+   ENCRYPT
+========================= */
 
 async function encryptMessage(text){
 
@@ -546,6 +593,10 @@ async function encryptMessage(text){
 
 }
 
+/* =========================
+   DECRYPT
+========================= */
+
 async function decryptMessage(obj){
 
     try{
@@ -584,6 +635,17 @@ async function decryptMessage(obj){
 
 }
 
+/* =========================
+   SEND MESSAGE
+========================= */
+
+document.getElementById(
+    "sendBtn"
+).addEventListener(
+    "click",
+    sendMessage
+);
+
 async function sendMessage(){
 
     const input =
@@ -616,6 +678,10 @@ async function sendMessage(){
     input.value = "";
 
 }
+
+/* =========================
+   LOAD MESSAGES
+========================= */
 
 async function loadMessages(){
 
@@ -700,27 +766,24 @@ async function loadMessages(){
 
 }
 
+/* =========================
+   ENTER TO SEND
+========================= */
+
 document.addEventListener(
     "keydown",
-
     function(e){
 
         if(
-
             e.key === "Enter" &&
-
             document.getElementById(
                 "chatPage"
             ).style.display === "block"
-
         ){
-
             sendMessage();
-
         }
 
     }
-
 );
 
 </script>
